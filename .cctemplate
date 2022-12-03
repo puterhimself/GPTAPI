@@ -1,0 +1,17 @@
+{
+  "name": "permissionless GPT API",
+  "metadata": {
+    "version": "0.1.0"
+  },
+  "templates": [
+    {
+      "path": "./",
+      "name": "permissionless GPT API",
+      "description": "GPT API from Permissionless",
+      "languages": [
+        "Python",
+        "Dockerfile"
+      ]
+    }
+  ]
+}

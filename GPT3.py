@@ -21,4 +21,8 @@ def GPT3():
     )
     return(res)
 
-run(host='localhost', port=8080, debug=True)
+@route("/", method='GET')
+def test():
+    return('working')
+
+run(host='localhost', port=3000)
