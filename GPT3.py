@@ -10,14 +10,14 @@ openai.organization = os.getenv('organisation')# "org-VgYqHHC2seYeXwoHsU05U3yT"
 openai.api_key = os.getenv('api') #"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"
 
 
-@route("/")
+@route("/", method='POST')
 def GPT3():
-    prompt = request.POST.getter('prompt')
-    params = request.POST.getter('config')
+    prompt = request.params.prompt
+    params = request.POST.config
     res = openai.Completion.create(
         model="text-davinci-003",
         prompt=prompt,
-        **params
+        **dict(params)
     )
     return(res)
 
