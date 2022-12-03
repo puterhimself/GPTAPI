@@ -1,0 +1,24 @@
+from bottle import route, run, get, post, request, response
+import openai
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+openai.organization = os.getenv('organisation')# "org-VgYqHHC2seYeXwoHsU05U3yT"
+openai.api_key = os.getenv('api') #"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"
+
+
+@route("/")
+def GPT3():
+    prompt = request.POST.getter('prompt')
+    params = request.POST.getter('config')
+    res = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=prompt,
+        **params
+    )
+    return(res)
+
+run(host='localhost', port=8080, debug=True)
