@@ -22,17 +22,18 @@ WORKDIR ${wd}
 
 # Copy application dependency manifests to the container image.
 # Copying this separately prevents re-running pip install on every code change.
-COPY requirements.txt ${wd}
+COPY ./requirements.txt .
 
 # Install dependencies.
-RUN pip install -r ${wd}/requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy local code to the container image.
-COPY . .${wd}
-
+COPY . .
+ENV api=“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”
+ENV organization=“org-VgYqHHC2seYeXwoHsU05U3yT”
 # Run the web service on container startup.
 # Use gunicorn webserver with one worker process and 8 threads.
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
 # Timeout is set to 0 to disable the timeouts of the workers to allow Cloud Run to handle instance scaling.
-CMD python3 GPT3.py
+CMD gunicorn --bind 0.0.0.0:8000 app:app --workers=5
