@@ -18,7 +18,7 @@ openai.api_key = os.getenv('api') #
 # returns hello world when we use GET.
 # returns the data that we send when we use POST.
 @app.route('/', methods = ['POST'])
-@cross_origin()
+@cross_origin(origins="*")
 def home():
     request_data = request.json
     prompt = request_data.get('prompt')
@@ -30,7 +30,6 @@ def home():
     )
 
     response = flask.jsonify(res)
-    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
   
 
