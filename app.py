@@ -7,7 +7,7 @@ import openai
   
 # creating a Flask app
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}}, allow_headers="*")
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 openai.organization = os.getenv('organisation')# "org-VgYqHHC2seYeXwoHsU05U3yT"
