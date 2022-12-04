@@ -8,7 +8,7 @@ import openai
 # creating a Flask app
 app = Flask(__name__)
 # CORS(app, resources={r"/*": {"origins": "*"}}, allow_headers="*")
-CORS(app)
+CORS(app, support_credentials=True)
 # app.config['CORS_HEADERS'] = 'Content-Type'
 
 openai.organization = os.getenv('organisation')# "org-VgYqHHC2seYeXwoHsU05U3yT"
@@ -18,7 +18,7 @@ openai.api_key = os.getenv('api') #
 # returns hello world when we use GET.
 # returns the data that we send when we use POST.
 @app.route('/', methods = ['POST'])
-@cross_origin(origin='*')
+@cross_origin(origin='*', support_credentials=True, allow_headers=True, methods=["POST"])
 def home():
     request_data = request.json
     prompt = request_data.get('prompt')
