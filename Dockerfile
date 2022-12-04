@@ -36,4 +36,4 @@ ENV organization=“org-VgYqHHC2seYeXwoHsU05U3yT”
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
 # Timeout is set to 0 to disable the timeouts of the workers to allow Cloud Run to handle instance scaling.
-CMD gunicorn --bind 0.0.0.0:8000 app:app --workers=5
+CMD  uvicorn fastapi_app:app --port 8000 --host 0.0.0.0 --workers=5
