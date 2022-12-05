@@ -29,8 +29,6 @@ RUN pip install -r requirements.txt
 
 # Copy local code to the container image.
 COPY . .
-ENV api=“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”
-ENV organization=“org-VgYqHHC2seYeXwoHsU05U3yT”
 # Run the web service on container startup.
 # Use gunicorn webserver with one worker process and 8 threads.
 # For environments with multiple CPU cores, increase the number of workers
