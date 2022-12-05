@@ -1,41 +1,40 @@
-# Using flask to make an api
-# import necessary libraries and functions
-from flask import Flask, jsonify, request
-from flask_cors import CORS, cross_origin
 import os
 import openai
-import flask
-  
-# creating a Flask app
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}, allow_headers="*")
-app.config['CORS_HEADERS'] = 'Content-Type'
 
-openai.organization = os.getenv('organisation')# "org-VgYqHHC2seYeXwoHsU05U3yT"
+from fastapi import APIRouter, FastAPI
+from pydantic import BaseModel
+from typing import Dict
+from fastapi.middleware.cors import CORSMiddleware
+
+
+app = FastAPI()
+# openai.organization = os.getenv('organisation')# "org-VgYqHHC2seYeXwoHsU05U3yT"
 openai.api_key = os.getenv('api') #
-  
-# on the terminal type: curl http://127.0.0.1:5000/
-# returns hello world when we use GET.
-# returns the data that we send when we use POST.
-@app.route('/', methods = ['POST'])
-@cross_origin(origins="*", methods="*")
-def home():
-    request_data = request.json
-    prompt = request_data.get('prompt')
-    config = request_data.get('config')
+
+class Item(BaseModel):
+    prompt: str
+    config: Dict = {}
+
+app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+router = APIRouter(prefix="")
+
+@router.post("/")
+def home(args: Item):
+    prompt = args.prompt
+    config = args.config
     res = openai.Completion.create(
         model="text-davinci-003",
         prompt=prompt,
         **dict(config)
     )
-
-    response = flask.jsonify(res)
-    return response
+    return res
   
 
-
-@app.route("/", methods=['GET'])
-def test():
-    return({"message": "working"})
-
-  
+app.include_router(router)
