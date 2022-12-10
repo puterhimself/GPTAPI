@@ -1,20 +1,14 @@
-import os
-import openai
-
-from fastapi import APIRouter, FastAPI
-from pydantic import BaseModel
-from typing import Dict
+import sys
+from API import routes
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from loguru import logger
+
+logger.add(sys.stderr, format="{time} {level} {message}", level="DEBUG")
 
 
 app = FastAPI()
-# openai.organization = os.getenv('organisation')# "org-VgYqHHC2seYeXwoHsU05U3yT"
-openai.api_key = os.getenv('api') #
-
-class Item(BaseModel):
-    prompt: str
-    config: Dict = {}
-
+logger.info('--FastAPI loaded-- {}'.format(app))
 app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -22,19 +16,4 @@ app.add_middleware(
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-router = APIRouter(prefix="")
-
-@router.post("/")
-def home(args: Item):
-    prompt = args.prompt
-    config = args.config
-    res = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=prompt,
-        **dict(config)
-    )
-    return res
-  
-
-app.include_router(router)
+app.include_router(routes.router)
